@@ -1,0 +1,26 @@
+:root {
+  --color-bg: #07111f;
+  --color-bg-elevated: #0b1728;
+  --color-bg-panel: rgba(10, 22, 38, 0.9);
+  --color-bg-panel-strong: rgba(7, 16, 29, 0.96);
+  --color-border: rgba(78, 128, 198, 0.32);
+  --color-border-strong: rgba(102, 171, 255, 0.55);
+  --color-text: #edf4ff;
+  --color-text-soft: #99afca;
+  --color-text-muted: #688099;
+  --color-primary: #46a5ff;
+  --color-primary-soft: rgba(70, 165, 255, 0.18);
+  --color-success: #33d17a;
+  --color-danger: #ff5a68;
+  --color-warning: #ffb24d;
+  --color-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  --color-panel-glow: 0 0 0 1px rgba(70, 165, 255, 0.08), 0 0 30px rgba(70, 165, 255, 0.08);
+
+  --screen-min-width: 1440px;
+  --header-height: 78px;
+  --panel-radius: 16px;
+  --panel-gap: 16px;
+
+  --font-family-base:
+    'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+}
