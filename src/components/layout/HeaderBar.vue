@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from 'pinia'
-import GlowButton from '@/components/common/GlowButton.vue'
+import ActionButton from '@/components/common/ActionButton.vue'
 import StatusTag from '@/components/common/StatusTag.vue'
 import { useDashboardStore } from '@/stores/dashboard'
 
@@ -11,10 +11,11 @@ const { commander, systemStatus } = storeToRefs(dashboardStore)
 <template>
   <header class="dashboard-card header-bar">
     <div class="header-block">
-      <div class="header-brand__badge">R</div>
+      <div class="header-brand__badge">RL</div>
       <div>
-        <p class="eyebrow">{{ systemStatus.brand }}</p>
+        <p class="eyebrow">项目工作台</p>
         <h1 class="header-title">{{ systemStatus.systemName }}</h1>
+        <p class="header-context">现场：{{ systemStatus.location }} / {{ systemStatus.rescueMode }}</p>
       </div>
     </div>
 
@@ -27,7 +28,9 @@ const { commander, systemStatus } = storeToRefs(dashboardStore)
       />
       <div class="status-meta">
         <span>任务代号：{{ systemStatus.missionCode }}</span>
-        <span>链路稳定度：{{ systemStatus.linkStability }}</span>
+        <span>更新时间：{{ systemStatus.lastUpdate }}</span>
+        <span>{{ systemStatus.dataSource }}</span>
+        <span>{{ systemStatus.version }}</span>
       </div>
     </div>
 
@@ -36,9 +39,9 @@ const { commander, systemStatus } = storeToRefs(dashboardStore)
       <div class="header-profile__meta">
         <p class="eyebrow">{{ commander.seat }}</p>
         <p class="header-operator">{{ commander.displayName }}</p>
-        <p class="header-subline">{{ commander.affiliation }} / {{ commander.authLevel }}</p>
+        <p class="header-subline">{{ commander.affiliation }} / {{ commander.operator }} / {{ commander.authLevel }}</p>
       </div>
-      <GlowButton kind="ghost" size="sm">演示模式</GlowButton>
+      <ActionButton kind="ghost" size="sm">本地联调</ActionButton>
     </div>
   </header>
 </template>
@@ -55,6 +58,12 @@ const { commander, systemStatus } = storeToRefs(dashboardStore)
 
 .header-profile__meta {
   min-width: 0;
+}
+
+.header-context {
+  margin-top: 5px;
+  color: var(--color-text-muted);
+  font-size: 0.76rem;
 }
 
 .header-subline {

@@ -17,6 +17,7 @@ const {
   terrainColumns,
   terrainLabels,
   situationLegend,
+  fieldNotes,
 } = storeToRefs(dashboardStore)
 
 const handleZoneDrop = (event, zoneId) => {
@@ -63,7 +64,7 @@ const orbitNeedleStyle = computed(() => ({
   transform: `rotate(${normalizeDegrees(camera.z)}deg)`,
 }))
 
-const cameraLabel = computed(() => `俯仰 ${Math.round(camera.x)}° / 环视 ${normalizeDegrees(camera.z)}°`)
+const cameraLabel = computed(() => `俯仰 ${Math.round(camera.x)}° · 环视 ${normalizeDegrees(camera.z)}°`)
 
 const resetCamera = () => {
   camera.x = cameraCenter.x
@@ -110,7 +111,7 @@ const endCameraDrag = (event) => {
 </script>
 
 <template>
-  <PanelCard eyebrow="Module 02" title="三维态势与参数配置区" badge="主态势区">
+  <PanelCard eyebrow="地图" title="任务态势" badge="拖动视角">
     <div
       :class="['situation-canvas', 'situation-canvas--3d', { 'situation-canvas--orbiting': camera.isDragging }]"
       @pointerdown="beginCameraDrag"
@@ -118,6 +119,18 @@ const endCameraDrag = (event) => {
       @pointerup="endCameraDrag"
       @pointercancel="endCameraDrag"
     >
+      <div class="map-toolbar">
+        <button class="map-tool map-tool--active" type="button">任务</button>
+        <button class="map-tool" type="button">链路</button>
+        <button class="map-tool" type="button">风险</button>
+      </div>
+
+      <div class="map-status-strip">
+        <span>链路稳定度 {{ systemStatus.linkStability }}</span>
+        <span>{{ systemStatus.networkPolicy }}</span>
+        <span>更新 {{ systemStatus.lastUpdate }}</span>
+      </div>
+
       <div class="situation-stage">
         <div class="terrain-shadow" :style="{ transform: shadowTransform }"></div>
         <div
@@ -134,7 +147,7 @@ const endCameraDrag = (event) => {
             <path class="map-contour" d="M18,512 C154,464 298,472 442,522 C572,566 718,568 842,524 C928,494 994,504 1060,540" />
 
             <path
-              class="map-river map-river--glow"
+              class="map-river map-river--buffer"
               d="M-20,446 C88,412 172,368 294,356 C404,344 492,374 586,358 C684,344 762,292 878,280 C944,274 988,280 1040,260"
             />
             <path
@@ -188,6 +201,16 @@ const endCameraDrag = (event) => {
           </span>
 
           <div
+            v-for="note in fieldNotes"
+            :key="note.id"
+            :class="['field-note', `field-note--${note.tone}`]"
+            :style="{ top: note.top, left: note.left }"
+          >
+            <strong>{{ note.title }}</strong>
+            <span>{{ note.body }}</span>
+          </div>
+
+          <div
             v-for="marker in situationMarkers"
             :key="marker.id"
             :class="[
@@ -226,17 +249,29 @@ const endCameraDrag = (event) => {
       </div>
 
       <div class="view-control">
-        <p class="eyebrow">360°</p>
+        <p class="view-control__title">视角</p>
         <div class="view-orbit">
           <span class="view-orbit__ring"></span>
           <span class="view-orbit__needle" :style="orbitNeedleStyle"></span>
         </div>
         <span class="view-control__readout">{{ cameraLabel }}</span>
-        <button class="view-control__reset" type="button" @click="resetCamera">返回</button>
+        <button class="view-control__reset" type="button" @click="resetCamera">复位</button>
       </div>
 
+      <div class="map-reference">
+        <div class="north-arrow">
+          <span>N</span>
+        </div>
+        <div class="scale-bar">
+          <span></span>
+          <small>500 m</small>
+        </div>
+      </div>
+
+      <div class="situation-hint">拖动视角 / 拖入装备</div>
+
       <div class="map-legend">
-        <p class="eyebrow">图层说明</p>
+        <p class="eyebrow">图层</p>
         <div class="map-legend__items">
           <div v-for="item in situationLegend" :key="item.id" class="map-legend__item">
             <span :class="['legend-dot', `legend-dot--${item.tone}`]"></span>
@@ -253,15 +288,15 @@ const endCameraDrag = (event) => {
 
       <div class="situation-overlay">
         <div class="overlay-card">
-          <p class="eyebrow">当前位置</p>
+          <p class="eyebrow">区域</p>
           <strong>{{ systemStatus.location }}</strong>
         </div>
         <div class="overlay-card">
-          <p class="eyebrow">风险等级</p>
+          <p class="eyebrow">风险</p>
           <strong class="tone-danger">{{ systemStatus.riskLevel }}</strong>
         </div>
         <div class="overlay-card">
-          <p class="eyebrow">当前焦点设备</p>
+          <p class="eyebrow">焦点</p>
           <strong>{{ selectedDevice.name }}</strong>
           <div class="overlay-status">
             <StatusTag :label="selectedDevice.status" :tone="selectedDevice.tone" :with-dot="false" />

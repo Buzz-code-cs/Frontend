@@ -19,9 +19,7 @@ body {
   min-width: 320px;
   font-family: var(--font-family-base);
   color: var(--color-text);
-  background:
-    radial-gradient(circle at top, rgba(36, 82, 140, 0.24), transparent 35%),
-    linear-gradient(180deg, #08111e 0%, #050b15 100%);
+  background: var(--color-bg);
 }
 
 img,

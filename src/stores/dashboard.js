@@ -18,7 +18,7 @@ const countEffectiveLines = (source) => source.split('\n').filter((line) => line
 export const useDashboardStore = defineStore('dashboard', () => {
   const systemStatus = ref({
     brand: 'RescuLink',
-    systemName: '联合搜救语言与微服务协同系统',
+    systemName: 'RescuLink 异构装备联合搜救平台',
     onlineLabel: '系统在线',
     missionCode: 'RSL-0423',
     linkStability: '98.4%',
@@ -27,21 +27,25 @@ export const useDashboardStore = defineStore('dashboard', () => {
     location: '嘉陵江北岸 / 南山联防区',
     riskLevel: 'III 级预警',
     riskTone: 'danger',
+    lastUpdate: '08:23:41',
+    dataSource: '模拟接入 / 本地联调',
+    version: 'v0.3.2',
   })
 
   const commander = ref({
-    seat: '指挥员席位',
-    displayName: '西南大学联合搜救演示终端',
-    affiliation: '前端与视觉原型席',
-    authLevel: 'A级联控',
+    seat: '当前席位',
+    displayName: '前端可视化联调台',
+    affiliation: '西南大学 / 竞赛联调环境',
+    authLevel: '指挥权限 A',
     operator: '杨凯量',
   })
 
   const devices = ref([
     {
       id: 'drone-alpha',
-      icon: 'U',
-      name: '无人机蜂群',
+      icon: '空',
+      callSign: 'AIR-A1',
+      name: '无人机 A 组',
       role: '高空侦察 / 热成像扫描',
       status: '在线',
       tone: 'success',
@@ -53,12 +57,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
       service: 'adapter-air-scout',
       authority: '远程联控',
       latency: '136ms',
+      lastSeen: '18 秒前',
       capabilities: ['热成像', '三维建图', '高空回传'],
     },
     {
       id: 'dog-beta',
-      icon: 'D',
-      name: '机器狗平台',
+      icon: '地',
+      callSign: 'GROUND-B2',
+      name: '机器狗 B 组',
       role: '地面复核 / 近距执行',
       status: '待命',
       tone: 'info',
@@ -70,12 +76,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
       service: 'adapter-ground-verify',
       authority: '近距半自治',
       latency: '168ms',
+      lastSeen: '31 秒前',
       capabilities: ['废墟穿越', '近距复核', '环境采样'],
     },
     {
       id: 'vehicle-gamma',
-      icon: 'V',
-      name: '救援车节点',
+      icon: '车',
+      callSign: 'RELAY-G3',
+      name: '通信中继车',
       role: '边缘自治 / 通信中继',
       status: '在线',
       tone: 'success',
@@ -87,11 +95,13 @@ export const useDashboardStore = defineStore('dashboard', () => {
       service: 'adapter-relay-edge',
       authority: '边缘自治',
       latency: '118ms',
+      lastSeen: '12 秒前',
       capabilities: ['自组网中继', '边缘缓存', '断点续传'],
     },
     {
       id: 'command-delta',
-      icon: 'C',
+      icon: '指',
+      callSign: 'CMD-D0',
       name: '指挥终端',
       role: '任务编排 / 态势联控',
       status: '联控中',
@@ -104,6 +114,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
       service: 'language-runtime-core',
       authority: 'A级指挥',
       latency: '42ms',
+      lastSeen: '本机',
       capabilities: ['任务编排', '语义校验', '指令审计'],
     },
   ])
@@ -298,7 +309,28 @@ export const useDashboardStore = defineStore('dashboard', () => {
     { id: 'l-3', tone: 'red', label: '高风险目标' },
   ])
 
-  const jsarlSource = ref(`mission FloodRescueAlpha {
+  const fieldNotes = ref([
+    {
+      id: 'note-risk',
+      top: '37%',
+      left: '73%',
+      title: '待复核',
+      body: 'R-17 水位读数偏高，优先派地面组二次确认。',
+      tone: 'danger',
+    },
+    {
+      id: 'note-relay',
+      top: '82%',
+      left: '56%',
+      title: '调度备注',
+      body: 'G-03 可作为弱网缓存节点，回传优先级调高。',
+      tone: 'primary',
+    },
+  ])
+
+  const jsarlSource = ref(`// 嘉陵江北岸联调脚本
+// 重点：R-17 漫溢点二次确认，弱网时启用中继缓存
+mission FloodRescueAlpha {
   use device "drone-alpha" mapped_to NEMS.Air.Scout
   use device "dog-beta" mapped_to NEMS.Ground.Verify
 
@@ -323,6 +355,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
       label: '链路时延',
       value: '142',
       unit: 'ms',
+      trend: '近 10 分钟 -12ms',
       ratio: 68,
       tone: 'primary',
     },
@@ -330,6 +363,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
       label: '设备在线率',
       value: '91',
       unit: '%',
+      trend: '4 类装备接入',
       ratio: 91,
       tone: 'success',
     },
@@ -337,6 +371,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
       label: '任务执行率',
       value: '76',
       unit: '%',
+      trend: '边缘执行待确认',
       ratio: 76,
       tone: 'warning',
     },
@@ -354,19 +389,19 @@ export const useDashboardStore = defineStore('dashboard', () => {
     {
       id: 'log-1',
       time: '08:00:12',
-      message: 'Adapter loaded for drone.swarm.alpha',
+      message: 'drone.swarm.alpha 已映射到 adapter-air-scout',
       tone: 'success',
     },
     {
       id: 'log-2',
       time: '08:00:15',
-      message: 'JSARL parsing pipeline initialized',
+      message: 'JSARL 运行时完成语义规则加载',
       tone: 'info',
     },
     {
       id: 'log-3',
       time: '08:00:20',
-      message: 'Mission script waiting for execution signal...',
+      message: '任务脚本等待指挥席人工确认',
       tone: 'warning',
     },
   ])
@@ -388,7 +423,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
     })),
   )
 
-  const deviceCountLabel = computed(() => `${devices.value.length}类在线`)
+  const deviceCountLabel = computed(() => `${devices.value.length}类接入`)
 
   const selectedDeviceProfile = computed(() => [
     {
@@ -396,7 +431,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
       value: selectedDevice.value.protocol,
     },
     {
-      label: '微服务端点',
+      label: '服务端点',
       value: selectedDevice.value.service,
     },
     {
@@ -405,7 +440,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
       tone: selectedDevice.value.tone,
     },
     {
-      label: '端到端时延',
+      label: '链路时延',
       value: selectedDevice.value.latency,
     },
   ])
@@ -415,28 +450,28 @@ export const useDashboardStore = defineStore('dashboard', () => {
       id: 'app',
       name: '指挥应用层',
       desc: '任务规划、态势监控、指令下发',
-      status: 'READY',
+      status: '就绪',
       tone: 'success',
     },
     {
       id: 'runtime',
       name: 'JSARL 语言运行时',
       desc: '解析 DSL、语义校验、生成标准指令流',
-      status: 'RUNNING',
+      status: '运行中',
       tone: 'primary',
     },
     {
       id: 'adapter',
       name: '协议适配服务',
       desc: '映射异构设备协议，屏蔽通信壁垒',
-      status: 'ROUTING',
+      status: '路由中',
       tone: 'warning',
     },
     {
       id: 'edge',
       name: '边缘自治节点',
       desc: '弱网缓存、断点续传、本地协同执行',
-      status: 'SYNC',
+      status: '同步中',
       tone: 'success',
     },
   ])
@@ -452,28 +487,28 @@ export const useDashboardStore = defineStore('dashboard', () => {
     {
       id: 'check-device',
       label: '设备映射',
-      status: 'PASS',
+      status: '通过',
       tone: 'success',
       desc: `${selectedDevice.value.id} -> ${selectedDevice.value.adapter}`,
     },
     {
       id: 'check-domain',
       label: '领域语义',
-      status: 'PASS',
+      status: '通过',
       tone: 'success',
       desc: 'mapped_to 路径已绑定救援装备能力模型',
     },
     {
       id: 'check-protocol',
       label: '协议解耦',
-      status: 'PASS',
+      status: '通过',
       tone: 'primary',
       desc: `${selectedDevice.value.protocol} 由适配器服务屏蔽差异`,
     },
     {
       id: 'check-edge',
       label: '弱网策略',
-      status: selectedDevice.value.service.includes('edge') ? 'LOCAL' : 'MESH',
+      status: selectedDevice.value.service.includes('edge') ? '本地自治' : 'MESH',
       tone: selectedDevice.value.service.includes('edge') ? 'success' : 'warning',
       desc: systemStatus.value.networkPolicy,
     },
@@ -484,14 +519,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
       id: 'route-command',
       from: 'command-delta',
       to: 'language-runtime-core',
-      channel: 'JSARL Parse',
+      channel: '脚本解析',
       latency: '42ms',
     },
     {
       id: 'route-adapter',
       from: 'language-runtime-core',
       to: selectedDevice.value.service,
-      channel: 'Semantic Route',
+      channel: '语义路由',
       latency: selectedDevice.value.latency,
     },
     {
@@ -514,7 +549,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
     },
     {
       label: '事件规则',
-      value: '3 条 on/when 规则',
+      value: `${countEffectiveLines(jsarlSource.value)} 行脚本`,
     },
     {
       label: '解析版本',
@@ -542,6 +577,8 @@ export const useDashboardStore = defineStore('dashboard', () => {
         },
         command: {
           action: 'dispatch',
+          approvalRequired: true,
+          operator: commander.value.operator,
           verifyRisk: true,
           telemetryBackhaul: true,
           fallback: 'MESH_FALLBACK',
@@ -603,13 +640,13 @@ export const useDashboardStore = defineStore('dashboard', () => {
     )
 
     selectedDeviceId.value = targetDevice.id
-    pushLog(`${targetDevice.name} assigned to ${targetZone.code} via JSARL routing`, 'success')
+    pushLog(`${targetDevice.name} 已编入 ${targetZone.code} 任务扇区`, 'success')
     endDeviceDrag()
   }
 
   const syncFormation = () => {
     const assignedCount = taskZones.value.filter((zone) => zone.assignedDeviceId).length
-    pushLog(`Formation synchronized: ${assignedCount}/${taskZones.value.length} rescue sectors ready`, 'success')
+    pushLog(`装备编组已同步：${assignedCount}/${taskZones.value.length} 个任务扇区就绪`, 'success')
   }
 
   const selectDevice = (deviceId) => {
@@ -624,7 +661,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
     }
 
     selectedDeviceId.value = deviceId
-    pushLog(`Focus switched to ${nextDevice.adapter}`, 'info')
+    pushLog(`当前焦点切换至 ${nextDevice.name}`, 'info')
   }
 
   const simulateParse = () => {
@@ -634,7 +671,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
       ...stage,
       active: stage.id !== 'stage-4',
     }))
-    pushLog(`JSARL parse completed for ${selectedDevice.value.name} (${effectiveLines} lines)`, 'success')
+    pushLog(`JSARL 脚本解析完成：${selectedDevice.value.name}，有效 ${effectiveLines} 行`, 'success')
   }
 
   const dispatchSelectedDevice = () => {
@@ -652,7 +689,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
       ...stage,
       active: true,
     }))
-    pushLog(`${selectedDevice.value.name} received execution payload`, 'warning')
+    pushLog(`${selectedDevice.value.name} 已收到执行载荷`, 'warning')
   }
 
   return {
@@ -671,6 +708,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
     taskZonesWithAssignments,
     terrainLabels,
     situationLegend,
+    fieldNotes,
     jsarlSource,
     executionLogs,
     chartMetrics,

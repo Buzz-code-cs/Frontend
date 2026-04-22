@@ -1,25 +1,30 @@
 :root {
-  --color-bg: #07111f;
-  --color-bg-elevated: #0b1728;
-  --color-bg-panel: rgba(10, 22, 38, 0.9);
-  --color-bg-panel-strong: rgba(7, 16, 29, 0.96);
-  --color-border: rgba(78, 128, 198, 0.32);
-  --color-border-strong: rgba(102, 171, 255, 0.55);
-  --color-text: #edf4ff;
-  --color-text-soft: #99afca;
-  --color-text-muted: #688099;
-  --color-primary: #46a5ff;
-  --color-primary-soft: rgba(70, 165, 255, 0.18);
-  --color-success: #33d17a;
-  --color-danger: #ff5a68;
-  --color-warning: #ffb24d;
-  --color-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-  --color-panel-glow: 0 0 0 1px rgba(70, 165, 255, 0.08), 0 0 30px rgba(70, 165, 255, 0.08);
+  --rgb-slate: 148 163 184;
+  --rgb-tech-blue: 74 151 196;
+  --rgb-rescue-red: 205 76 88;
+  --rgb-safe-green: 67 176 119;
+
+  --color-bg: #090f18;
+  --color-bg-elevated: #0d1726;
+  --color-bg-panel: #111b2a;
+  --color-bg-panel-strong: #0b1422;
+  --color-border: rgb(var(--rgb-slate) / 0.18);
+  --color-border-strong: rgb(var(--rgb-slate) / 0.28);
+  --color-text: #e7eef8;
+  --color-text-soft: #a3b2c7;
+  --color-text-muted: #718197;
+  --color-primary: #4a97c4;
+  --color-primary-soft: rgb(var(--rgb-tech-blue) / 0.1);
+  --color-success: #43b077;
+  --color-danger: #cd4c58;
+  --color-warning: #c79447;
+  --color-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  --color-panel-line: none;
 
   --screen-min-width: 1440px;
   --header-height: 78px;
-  --panel-radius: 16px;
-  --panel-gap: 16px;
+  --panel-radius: 10px;
+  --panel-gap: 12px;
 
   --font-family-base:
     'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;

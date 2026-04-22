@@ -65,7 +65,8 @@ const hasHeader = computed(
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  padding: 16px 18px 12px;
+  padding: 14px 16px 11px;
+  border-bottom: 1px solid rgb(var(--rgb-slate) / 0.08);
 }
 
 .panel-card__title {
@@ -73,14 +74,14 @@ const hasHeader = computed(
 }
 
 .panel-card__title h2 {
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 600;
 }
 
 .panel-card__subtitle {
-  margin-top: 6px;
+  margin-top: 5px;
   color: var(--color-text-soft);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
 }
 
 .panel-card__actions {
@@ -94,11 +95,11 @@ const hasHeader = computed(
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  gap: 16px;
-  padding: 0 18px 16px;
+  gap: 12px;
+  padding: 12px 16px 14px;
 }
 
 .panel-card__footer {
-  padding: 0 18px 16px;
+  padding: 0 16px 14px;
 }
 </style>

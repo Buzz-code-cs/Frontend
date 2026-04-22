@@ -17,7 +17,8 @@ const { chartMetrics, chartSeries, chartTimeline } = storeToRefs(dashboardStore)
 
 const trendOption = computed(() => ({
   backgroundColor: 'transparent',
-  color: ['#46a5ff', '#33d17a', '#ffb24d'],
+  color: ['#4a97c4', '#43b077', '#c79447'],
+  animation: false,
   grid: {
     top: 34,
     right: 34,
@@ -30,16 +31,16 @@ const trendOption = computed(() => ({
     itemWidth: 8,
     itemHeight: 8,
     textStyle: {
-      color: '#8fa8c8',
+      color: '#a3b2c7',
       fontSize: 10,
     },
   },
   tooltip: {
     trigger: 'axis',
     backgroundColor: 'rgba(4, 11, 20, 0.92)',
-    borderColor: 'rgba(70, 165, 255, 0.24)',
+    borderColor: 'rgba(74, 151, 196, 0.24)',
     textStyle: {
-      color: '#d8e8ff',
+      color: '#e7eef8',
     },
   },
   xAxis: {
@@ -48,14 +49,14 @@ const trendOption = computed(() => ({
     data: chartTimeline.value,
     axisLine: {
       lineStyle: {
-        color: 'rgba(92, 142, 210, 0.24)',
+        color: 'rgba(148, 163, 184, 0.2)',
       },
     },
     axisTick: {
       show: false,
     },
     axisLabel: {
-      color: '#6f86a6',
+      color: '#718197',
       fontSize: 10,
     },
   },
@@ -66,16 +67,16 @@ const trendOption = computed(() => ({
       min: 100,
       max: 200,
       nameTextStyle: {
-        color: '#6f86a6',
+        color: '#718197',
         fontSize: 10,
       },
       splitLine: {
         lineStyle: {
-          color: 'rgba(92, 142, 210, 0.08)',
+          color: 'rgba(148, 163, 184, 0.08)',
         },
       },
       axisLabel: {
-        color: '#6f86a6',
+        color: '#718197',
         fontSize: 10,
       },
     },
@@ -85,14 +86,14 @@ const trendOption = computed(() => ({
       min: 0,
       max: 100,
       nameTextStyle: {
-        color: '#6f86a6',
+        color: '#718197',
         fontSize: 10,
       },
       splitLine: {
         show: false,
       },
       axisLabel: {
-        color: '#6f86a6',
+        color: '#718197',
         fontSize: 10,
       },
     },
@@ -102,37 +103,49 @@ const trendOption = computed(() => ({
       name: '链路时延',
       type: 'line',
       smooth: true,
-      showSymbol: false,
+      showSymbol: true,
+      symbolSize: 4,
       yAxisIndex: 0,
       data: chartSeries.value.latency,
+      lineStyle: {
+        width: 2,
+      },
       areaStyle: {
-        color: 'rgba(70, 165, 255, 0.1)',
+        color: 'rgba(74, 151, 196, 0.08)',
       },
     },
     {
       name: '在线率',
       type: 'line',
       smooth: true,
-      showSymbol: false,
+      showSymbol: true,
+      symbolSize: 4,
       yAxisIndex: 1,
       data: chartSeries.value.onlineRate,
+      lineStyle: {
+        width: 2,
+      },
     },
     {
       name: '执行率',
       type: 'line',
       smooth: true,
-      showSymbol: false,
+      showSymbol: true,
+      symbolSize: 4,
       yAxisIndex: 1,
       data: chartSeries.value.executionRate,
+      lineStyle: {
+        width: 2,
+      },
     },
   ],
 }))
 </script>
 
 <template>
-  <PanelCard eyebrow="Module 04" title="图表趋势区">
+  <PanelCard eyebrow="指标" title="运行采样" subtitle="联调采样数据，用于观察链路波动">
     <template #actions>
-      <StatusTag label="ECharts 已接入" tone="primary" :with-dot="false" />
+      <StatusTag label="实时指标" tone="primary" :with-dot="false" />
     </template>
 
     <div class="mini-chart">
@@ -144,6 +157,7 @@ const trendOption = computed(() => ({
         <div v-for="metric in chartMetrics" :key="metric.label" class="chart-metric">
           <span>{{ metric.label }}</span>
           <strong>{{ metric.value }}{{ metric.unit }}</strong>
+          <small>{{ metric.trend }}</small>
         </div>
       </div>
     </div>

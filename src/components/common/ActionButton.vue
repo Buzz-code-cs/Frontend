@@ -16,15 +16,15 @@ const props = defineProps({
 </script>
 
 <template>
-  <button :type="props.type" :class="['glow-button', `glow-button--${props.kind}`, `glow-button--${props.size}`]">
+  <button :type="props.type" :class="['action-button', `action-button--${props.kind}`, `action-button--${props.size}`]">
     <slot />
   </button>
 </template>
 
 <style scoped>
-.glow-button {
+.action-button {
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: 7px;
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
@@ -34,30 +34,30 @@ const props = defineProps({
     background 0.2s ease;
 }
 
-.glow-button:hover {
-  transform: translateY(-1px);
+.action-button:hover {
+  transform: none;
 }
 
-.glow-button--md {
+.action-button--md {
   padding: 10px 14px;
   font-size: 0.88rem;
 }
 
-.glow-button--sm {
+.action-button--sm {
   padding: 7px 12px;
   font-size: 0.78rem;
 }
 
-.glow-button--primary {
+.action-button--primary {
   color: #eff7ff;
-  border-color: rgba(70, 165, 255, 0.35);
-  background: linear-gradient(135deg, rgba(70, 165, 255, 0.24), rgba(70, 165, 255, 0.08));
-  box-shadow: inset 0 0 14px rgba(70, 165, 255, 0.12);
+  border-color: rgb(var(--rgb-tech-blue) / 0.32);
+  background: rgb(var(--rgb-tech-blue) / 0.16);
+  box-shadow: none;
 }
 
-.glow-button--ghost {
+.action-button--ghost {
   color: var(--color-text-soft);
-  border-color: rgba(117, 140, 173, 0.22);
-  background: rgba(9, 18, 32, 0.75);
+  border-color: rgb(var(--rgb-slate) / 0.2);
+  background: rgba(9, 18, 32, 0.54);
 }
 </style>

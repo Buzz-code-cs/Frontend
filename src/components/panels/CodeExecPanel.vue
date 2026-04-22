@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from 'pinia'
-import GlowButton from '@/components/common/GlowButton.vue'
+import ActionButton from '@/components/common/ActionButton.vue'
 import PanelCard from '@/components/common/PanelCard.vue'
 import StatusTag from '@/components/common/StatusTag.vue'
 import { useDashboardStore } from '@/stores/dashboard'
@@ -11,11 +11,16 @@ const { compiledPayload, executionLogs, routePlan, selectedDevice, semanticCheck
 </script>
 
 <template>
-  <PanelCard eyebrow="Module 06" title="解析后的设备源码执行区">
+  <PanelCard
+    eyebrow="回执"
+    title="下发记录"
+    subtitle="核对路由、载荷和执行日志"
+  >
     <template #actions>
       <div class="exec-actions">
+        <StatusTag label="需确认" tone="warning" :with-dot="false" />
         <StatusTag :label="selectedDevice.status" :tone="selectedDevice.tone" :with-dot="false" />
-        <GlowButton size="sm" @click="dashboardStore.dispatchSelectedDevice">下发执行</GlowButton>
+        <ActionButton size="sm" @click="dashboardStore.dispatchSelectedDevice">下发执行</ActionButton>
       </div>
     </template>
 
@@ -35,8 +40,9 @@ const { compiledPayload, executionLogs, routePlan, selectedDevice, semanticCheck
         <div class="exec-route__track">
           <template v-for="(route, index) in routePlan" :key="route.id">
             <div class="exec-route__node">
-              <strong>{{ route.to }}</strong>
-              <span>{{ route.channel }} / {{ route.latency }}</span>
+              <strong>{{ route.from }}</strong>
+              <span>到 {{ route.to }}</span>
+              <em>{{ route.channel }} / {{ route.latency }}</em>
             </div>
             <span v-if="index < routePlan.length - 1" class="exec-route__arrow">→</span>
           </template>
@@ -51,7 +57,7 @@ const { compiledPayload, executionLogs, routePlan, selectedDevice, semanticCheck
 
         <section class="exec-section">
           <p class="eyebrow">执行日志</p>
-          <div class="log-placeholder">
+          <div class="exec-log">
             <div v-for="log in executionLogs" :key="log.id" class="log-row">
               <span class="log-time">{{ log.time }}</span>
               <span>{{ log.message }}</span>

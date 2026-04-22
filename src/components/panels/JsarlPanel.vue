@@ -1,7 +1,7 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import GlowButton from '@/components/common/GlowButton.vue'
+import ActionButton from '@/components/common/ActionButton.vue'
 import PanelCard from '@/components/common/PanelCard.vue'
 import StatusTag from '@/components/common/StatusTag.vue'
 import { useDashboardStore } from '@/stores/dashboard'
@@ -79,21 +79,21 @@ const setupJsarlLanguage = () => {
     base: 'vs-dark',
     inherit: true,
     rules: [
-      { token: 'keyword', foreground: '46a5ff', fontStyle: 'bold' },
-      { token: 'string', foreground: '33d17a' },
-      { token: 'number', foreground: 'ffb24d' },
-      { token: 'operator', foreground: 'ff5a68' },
+      { token: 'keyword', foreground: '4a97c4', fontStyle: 'bold' },
+      { token: 'string', foreground: '43b077' },
+      { token: 'number', foreground: 'c79447' },
+      { token: 'operator', foreground: 'cd4c58' },
       { token: 'comment', foreground: '6f86a6', fontStyle: 'italic' },
     ],
     colors: {
-      'editor.background': '#050b14',
-      'editor.foreground': '#d8e8ff',
-      'editor.lineHighlightBackground': '#102238',
+      'editor.background': '#090f18',
+      'editor.foreground': '#e7eef8',
+      'editor.lineHighlightBackground': '#101b2b',
       'editorLineNumber.foreground': '#546a88',
-      'editorLineNumber.activeForeground': '#46a5ff',
-      'editorCursor.foreground': '#46a5ff',
-      'editor.selectionBackground': '#235f96',
-      'editor.inactiveSelectionBackground': '#163854',
+      'editorLineNumber.activeForeground': '#4a97c4',
+      'editorCursor.foreground': '#4a97c4',
+      'editor.selectionBackground': '#1b4d68',
+      'editor.inactiveSelectionBackground': '#132c3d',
     },
   })
 }
@@ -165,18 +165,26 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <PanelCard eyebrow="Module 05" title="JSARL 语言输入输出区">
+  <PanelCard
+    eyebrow="脚本"
+    title="JSARL 编辑"
+    subtitle="当前任务脚本，从语言规则生成设备载荷"
+  >
     <template #actions>
       <div class="jsarl-actions">
-        <StatusTag label="Monaco 已接入" tone="primary" :with-dot="false" />
-        <GlowButton kind="ghost" size="sm" @click="dashboardStore.simulateParse">
+        <StatusTag label="脚本编辑" tone="primary" :with-dot="false" />
+        <ActionButton kind="ghost" size="sm" @click="dashboardStore.simulateParse">
           解析脚本
-        </GlowButton>
+        </ActionButton>
       </div>
     </template>
 
     <div class="jsarl-panel">
       <div class="jsarl-editor">
+        <div class="jsarl-editor__bar">
+          <span>mission_flood_rescue.jsarl</span>
+          <span>未保存 / 可解析</span>
+        </div>
         <div ref="editorHost" class="jsarl-monaco"></div>
         <div v-if="isEditorLoading || editorLoadError" class="jsarl-monaco__state">
           {{ editorLoadError || 'JSARL 编辑器加载中...' }}
@@ -193,7 +201,7 @@ onBeforeUnmount(() => {
 
     <template #footer>
       <div class="panel-footnote">
-        可直接编辑 JSARL 脚本；解析摘要和执行载荷会随当前焦点设备联动更新。
+        编辑脚本后点击解析，右侧摘要和下方载荷会按当前焦点装备刷新。
       </div>
     </template>
   </PanelCard>

@@ -10,7 +10,11 @@ const { missionStages, selectedDevice, selectedDeviceProfile, servicePipeline } 
 </script>
 
 <template>
-  <PanelCard eyebrow="Module 03" title="参数配置与服务链路">
+  <PanelCard
+    eyebrow="参数"
+    title="装备详情"
+    subtitle="当前焦点装备的协议、权限与服务节点"
+  >
     <template #actions>
       <StatusTag :label="selectedDevice.status" :tone="selectedDevice.tone" :with-dot="false" />
     </template>
@@ -19,7 +23,7 @@ const { missionStages, selectedDevice, selectedDeviceProfile, servicePipeline } 
       <section class="parameter-profile">
         <div class="parameter-profile__header">
           <div>
-            <p class="eyebrow">Selected Unit</p>
+            <p class="eyebrow">当前装备</p>
             <h3>{{ selectedDevice.name }}</h3>
           </div>
           <StatusTag :label="selectedDevice.authority" :tone="selectedDevice.tone" :with-dot="false" />
@@ -48,7 +52,7 @@ const { missionStages, selectedDevice, selectedDeviceProfile, servicePipeline } 
       </section>
 
       <section class="service-flow">
-        <p class="eyebrow">JSARL Runtime Chain</p>
+        <p class="eyebrow">JSARL 服务链路</p>
         <div v-for="(node, index) in servicePipeline" :key="node.id" class="service-node">
           <span class="service-node__index">{{ String(index + 1).padStart(2, '0') }}</span>
           <div class="service-node__body">
@@ -60,7 +64,7 @@ const { missionStages, selectedDevice, selectedDeviceProfile, servicePipeline } 
       </section>
 
       <section class="mission-stage">
-        <p class="eyebrow">Closed Loop</p>
+        <p class="eyebrow">任务闭环</p>
         <div class="mission-stage__track">
           <span
             v-for="stage in missionStages"
@@ -70,6 +74,7 @@ const { missionStages, selectedDevice, selectedDeviceProfile, servicePipeline } 
             {{ stage.label }}
           </span>
         </div>
+        <p class="mission-stage__note">边缘执行需指挥席确认后写入执行日志。</p>
       </section>
     </div>
   </PanelCard>

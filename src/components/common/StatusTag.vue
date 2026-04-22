@@ -27,10 +27,10 @@ const props = defineProps({
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 10px;
+  padding: 4px 8px;
   border: 1px solid transparent;
-  border-radius: 999px;
-  font-size: 0.78rem;
+  border-radius: 7px;
+  font-size: 0.74rem;
   line-height: 1;
   white-space: nowrap;
 }
@@ -40,36 +40,36 @@ const props = defineProps({
   height: 7px;
   border-radius: 50%;
   background: currentColor;
-  box-shadow: 0 0 10px currentColor;
+  box-shadow: none;
 }
 
 .status-tag--info {
   color: var(--color-text-soft);
-  border-color: rgba(117, 140, 173, 0.22);
-  background: rgba(117, 140, 173, 0.08);
+  border-color: rgb(var(--rgb-slate) / 0.22);
+  background: rgb(var(--rgb-slate) / 0.08);
 }
 
 .status-tag--primary {
   color: var(--color-primary);
-  border-color: rgba(70, 165, 255, 0.28);
-  background: rgba(70, 165, 255, 0.12);
+  border-color: rgb(var(--rgb-tech-blue) / 0.24);
+  background: rgb(var(--rgb-tech-blue) / 0.08);
 }
 
 .status-tag--success {
-  color: #c8ffe2;
-  border-color: rgba(51, 209, 122, 0.28);
-  background: rgba(51, 209, 122, 0.12);
+  color: #c8e9d6;
+  border-color: rgb(var(--rgb-safe-green) / 0.24);
+  background: rgb(var(--rgb-safe-green) / 0.1);
 }
 
 .status-tag--warning {
-  color: #ffe2b7;
-  border-color: rgba(255, 178, 77, 0.28);
-  background: rgba(255, 178, 77, 0.12);
+  color: #efd8ac;
+  border-color: rgba(217, 162, 76, 0.24);
+  background: rgba(217, 162, 76, 0.1);
 }
 
 .status-tag--danger {
-  color: #ffd4d8;
-  border-color: rgba(255, 90, 104, 0.3);
-  background: rgba(255, 90, 104, 0.12);
+  color: #efd0d3;
+  border-color: rgb(var(--rgb-rescue-red) / 0.24);
+  background: rgb(var(--rgb-rescue-red) / 0.1);
 }
 </style>
